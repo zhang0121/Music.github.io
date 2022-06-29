@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <div class="container1">
+    <div class="container1 clearfix">
       <div class="left">
         <div class="left1">
           <Mv :detail="detail"></Mv>
@@ -227,6 +227,11 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.clearfix::after {
+    content: "";
+    display: block;
+    clear: both;
+}
 .container {
   width: 100%;
   .container1 {
