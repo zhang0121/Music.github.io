@@ -118,6 +118,7 @@ export default {
           return "日本";
       }
     },
+
   },
   methods: {
     changeIndex(id) {
@@ -149,13 +150,13 @@ export default {
 
       this.$router.push({
         name: "video",
-        query: { types: "mv", id: id },
+        query: {types:'mv', id: id },
       });
     },
     // 分页回调
     upData(num) {
-      if (num <= 0) {
-        num = 1;
+      if(num<=0){
+        num=1;
       }
       this.pageNo = num;
       this.$store.dispatch("getMvList", {
