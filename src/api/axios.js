@@ -2,13 +2,14 @@ import axios from 'axios';
 import nProgress from 'nprogress';
 import "nprogress/nprogress.css";
 let requests = axios.create({
-    timeout: 10000,
-
+    timeout: 5000,
+    baseURL: '/api/',
 });
 
 requests.interceptors.request.use((config) => {
 
     nProgress.start();
+    // console.log(333);
     return config;
 })
 requests.interceptors.response.use(

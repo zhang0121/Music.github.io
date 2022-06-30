@@ -39,8 +39,9 @@
               v-lazy="item.cover"
               :id="item.id"
               @click="toPlayMv(item.id, index)"
+              :title="item.name"
             />
-            <p @click="toPlayMv(item.id, index)">{{ item.name }}</p>
+            <p @click="toPlayMv(item.id, index)" :title="item.name">{{ item.name }}</p>
             <router-link to="" class="author">{{
               item.artistName
             }}</router-link>
@@ -57,8 +58,8 @@
             )"
             :key="item.id"
           >
-            <img v-lazy="item.cover" @click="toPlayMv(item.id, index + 10)" />
-            <p @click="toPlayMv(item.id, index + 10)">{{ item.name }}</p>
+            <img v-lazy="item.cover" @click="toPlayMv(item.id, index + 10)" :title="item.name"/>
+            <p @click="toPlayMv(item.id, index + 10)" :title="item.name">{{ item.name }}</p>
             <router-link to="" class="author">{{
               item.artistName
             }}</router-link>
@@ -71,7 +72,7 @@
       <Pagination
         :pageNo="pageNo"
         :pageSize="limit"
-        :total="5"
+        :total="index2==1?3:0"
         @upData="upData"
       ></Pagination>
     </div>
@@ -117,7 +118,6 @@ export default {
           return "日本";
       }
     },
-
   },
   methods: {
     changeIndex(id) {
@@ -149,11 +149,14 @@ export default {
 
       this.$router.push({
         name: "video",
-        query: {types:'mv', id: id },
+        query: { types: "mv", id: id },
       });
     },
     // 分页回调
     upData(num) {
+      if (num <= 0) {
+        num = 1;
+      }
       this.pageNo = num;
       this.$store.dispatch("getMvList", {
         area: this.area,
@@ -224,7 +227,7 @@ export default {
     }
     .ul {
       img {
-        width: 80px;
+        width: 120px;
         height: 80px;
         border-radius: 10px;
         margin: 3px 0 0 3px;
@@ -242,11 +245,11 @@ export default {
         position: absolute;
         font-size: 16px;
         top: 15%;
-        left: 23%;
+        left: 33%;
         display: -webkit-box;
         white-space: pre-wrap;
         -webkit-box-orient: vertical;
-        -webkit-line-clamp: 2; //限制显示3行
+        -webkit-line-clamp: 1; //限制显示3行
         text-overflow: ellipsis;
         overflow: hidden;
         cursor: pointer;
@@ -258,7 +261,7 @@ export default {
       .author {
         position: absolute;
         bottom: 10px;
-        left: 23%;
+        left: 33%;
         text-overflow: ellipsis;
 
         &:hover {
