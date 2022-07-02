@@ -12,9 +12,8 @@
         <li class="head1" @click="getMvList()"><span>推荐MV</span></li>
         <li
           class="head1"
-          @mouseenter="display = true"
+          @mouseenter="getVideoTags"
           @mouseleave="display = false"
-          
         >
           <span>推荐视频</span>
           <img src="./img/三角1 (1).png" :class="{ hover: display }" />
@@ -49,7 +48,10 @@
                 :key="index"
                 class="hot"
               >
-                <a href="javascript:" class="word" @click="search(item.searchWord)"
+                <a
+                  href="javascript:"
+                  class="word"
+                  @click="search(item.searchWord)"
                   >{{ item.searchWord }}
                 </a>
               </li>
@@ -57,11 +59,16 @@
           </div>
         </div>
       </div>
+      <div class="baogao">
+        <el-button type="password" @click="open">查看报告</el-button>
+        <a id="a" href="javascript:" target="blank"></a>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+import md5 from "js-md5";
 export default {
   data() {
     return {
@@ -71,13 +78,10 @@ export default {
       keyWord: "",
     };
   },
-  mounted() {
-    this.$store.dispatch("getVideoTagsList");
-  },
+  mounted() {},
   methods: {
     // 热门歌手
     getHotSinger(e) {
-     
       this.$router.push("/hotsinger");
     },
     // 热门歌单
@@ -87,7 +91,6 @@ export default {
     // mv
     async getMvList() {
       this.$router.push("/mvlist?hot=1&type=0");
-     
     },
     //
     toVideo(id, name) {
@@ -103,13 +106,41 @@ export default {
       this.displayHot = true;
     },
     // 搜搜
-    search(keyWords){
-      if(keyWords){
-        this.keyWord=keyWords
+    search(keyWords) {
+      if (keyWords) {
+        this.keyWord = keyWords;
       }
-      this.displayHot=false;
+      this.displayHot = false;
       // sessionStorage.setItem("type",1)
-      this.$router.push({name:'songs',query:{type:1,keyWord:this.keyWord}})
+      this.$router.push({
+        name: "songs",
+        query: { type: 1, keyWord: this.keyWord },
+      });
+    },
+    //
+    open() {
+      this.$prompt("请输入密码", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        lockScroll: false,
+        closeOnClickModal: false,
+      })
+        .then(({ value }) => {
+          let a = document.getElementById("a");
+          a.href = `http://47.112.103.44:8888/baogao?pass=${md5(value)}`;
+          a.click();
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "取消输入",
+          });
+        });
+    },
+    //
+    getVideoTags() {
+      this.display = true;
+      if (this.videoTags.length == 0) this.$store.dispatch("getVideoTagsList");
     },
     backHome() {
       this.$router.push("/");
@@ -132,7 +163,6 @@ export default {
 
 <style scoped lang="less">
 .container {
-  
   width: 100%;
   min-width: 640px;
   height: 70px;
@@ -140,7 +170,7 @@ export default {
   display: flex;
   align-items: center;
   .container1 {
-  background-color: rgb(154, 154, 168);
+    background-color: rgb(154, 154, 168);
     min-width: 1024px;
     height: 70px;
     margin: auto;
@@ -278,6 +308,9 @@ export default {
       .hover {
         display: block;
       }
+    }
+    .baogao {
+      margin-left: 30px;
     }
   }
 }

@@ -1,4 +1,5 @@
 import { reqGetBanner, reqGetNewMusic, reqGetVideoTagsList, reqGetHotSearchList } from '@/api/index';
+
 const state = {
     // 轮播图
     banner: [],
@@ -7,6 +8,8 @@ const state = {
     // tags
     videoTags: [],
     hotSearchList: [],
+    // 报告
+    baogao: {},
 
 }
 
@@ -43,7 +46,9 @@ const actions = {
             // console.log(a.data);
             store.commit("GETHOTSEARCHLIST", a.data)
         }
-    }
+    },
+    // 
+
 }
 
 const mutations = {

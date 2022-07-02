@@ -6,7 +6,7 @@
       preload="auto"
       ref="aplayer"
       :lrcType="1"
-      
+      @error="handleEvent"
       fixed
     />
     <div class="clear" @click="clear">
@@ -65,15 +65,29 @@ export default {
       let a = await this.$API.reqGetMusicDetail(id);
       let b = await this.$API.reqGetMusicLrc(id);
       if (a.code == 200 && b.code == 200) {
-      
         return { a, b };
       }
     },
     // 清空
-    clear(){
+    clear() {
+  
+       let i = 0;
+      let timer1 = setInterval(() => {
+        i++;
+        if (i < this.ids.length) {
+          this.audio.pop();
+        } else {
+          clearInterval(timer1);
+        }
+      }, 50);
       sessionStorage.clear();
-    }
-   
+    },
+    // 播放出错 切换下一首
+    handleEvent() {
+      this.$refs.aplayer.skipForward();
+      this.$refs.aplayer.play();
+
+    },
   },
   computed: {
     // 播放列表歌曲id
@@ -89,7 +103,7 @@ export default {
       // immediate: true,
       deep: true,
       async handler() {
-        console.log(this.ids);
+        // console.log(this.ids);
         let id = this.ids[this.ids.length - 1];
         if (id != 0 && id != 1 && id != 0) {
           try {
@@ -104,7 +118,7 @@ export default {
                 lrc: song.b.lrc.lyric,
               };
               this.audio.push(song1);
-              if ((id[1] == 1)) {
+              if (id[1] == 1) {
                 this.$refs.aplayer.switch(song1.name); // 切换到播放列表中歌曲名包含“东西”的第一首歌
                 this.$refs.aplayer.play(); //播放音频
               }
@@ -116,13 +130,12 @@ export default {
   },
 };
 </script>
-<style scoped lang="less"> 
-.container{
-  .clear{
+<style scoped lang="less">
+.container {
+  .clear {
     position: absolute;
     top: 1px;
     left: -2px;
   }
 }
-
 </style>

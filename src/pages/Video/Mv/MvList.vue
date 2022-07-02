@@ -41,7 +41,9 @@
               @click="toPlayMv(item.id, index)"
               :title="item.name"
             />
-            <p @click="toPlayMv(item.id, index)" :title="item.name">{{ item.name }}</p>
+            <p @click="toPlayMv(item.id, index)" :title="item.name">
+              {{ item.name }}
+            </p>
             <router-link to="" class="author">{{
               item.artistName
             }}</router-link>
@@ -58,8 +60,14 @@
             )"
             :key="item.id"
           >
-            <img v-lazy="item.cover" @click="toPlayMv(item.id, index + 10)" :title="item.name"/>
-            <p @click="toPlayMv(item.id, index + 10)" :title="item.name">{{ item.name }}</p>
+            <img
+              v-lazy="item.cover"
+              @click="toPlayMv(item.id, index + 10)"
+              :title="item.name"
+            />
+            <p @click="toPlayMv(item.id, index + 10)" :title="item.name">
+              {{ item.name }}
+            </p>
             <router-link to="" class="author">{{
               item.artistName
             }}</router-link>
@@ -72,7 +80,7 @@
       <Pagination
         :pageNo="pageNo"
         :pageSize="limit"
-        :total="index2==1?3:0"
+        :total="index2 == 1 ? 3 : 0"
         @upData="upData"
       ></Pagination>
     </div>
@@ -118,7 +126,6 @@ export default {
           return "日本";
       }
     },
-
   },
   methods: {
     changeIndex(id) {
@@ -150,13 +157,15 @@ export default {
 
       this.$router.push({
         name: "video",
-        query: {types:'mv', id: id },
+        query: { types: "mv", id: id },
       });
     },
     // 分页回调
     upData(num) {
-      if(num<=0){
-        num=1;
+      if (num <= 0) {
+        num = 1;
+      } else if ((num > 3) & (this.index2 == 1)) {
+        num = 1;
       }
       this.pageNo = num;
       this.$store.dispatch("getMvList", {

@@ -21,13 +21,17 @@ Vue.component('Play', Play);
 Vue.component('Pagination', Pagination);
 
 // 引入element
-import { Button, Icon, Input, Row, Col } from 'element-ui';
+import { Button, Icon, Input, Row, Col, MessageBox, Message } from 'element-ui';
 Vue.use(Button);
 Vue.use(Icon)
 Vue.use(Input)
 Vue.use(Row)
 Vue.use(Col)
-
+Vue.prototype.$msgbox = MessageBox;
+Vue.prototype.$alert = MessageBox.alert;
+Vue.prototype.$confirm = MessageBox.confirm;
+Vue.prototype.$prompt = MessageBox.prompt;
+Vue.prototype.$message = Message;
 // 引入懒加载
 import VueLazyload from 'vue-lazyload'
 import img from '@/assets/lazyLoad.gif'
