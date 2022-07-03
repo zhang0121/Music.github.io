@@ -17,7 +17,7 @@ requests.interceptors.response.use(
         return response.data;
     },
     (error) => {
-        alert("服务器响应数据失败");
+        // alert(error.message);
     }
 )
 

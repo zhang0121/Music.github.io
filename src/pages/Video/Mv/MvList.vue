@@ -103,6 +103,9 @@ export default {
       index2: 1,
     };
   },
+  mounted() {
+    this.getData();
+  },
   computed: {
     mvList() {
       if (this.$store.state.mv.mvList) {
@@ -128,6 +131,16 @@ export default {
     },
   },
   methods: {
+    //
+    getData() {
+      this.$store.dispatch("getMvList", {
+        area: this.area,
+        pageNo: this.pageNo,
+        limit: this.limit,
+        // 用于判断是否是获取热门mv
+        isHot: this.$route.query.hot,
+      });
+    },
     changeIndex(id) {
       // 取消热门
       if (this.index2 == 1) {
@@ -137,6 +150,8 @@ export default {
         this.index = id;
         this.$router.push(`/mvlist?hot=0&type=${id}`);
       }
+      this.pageNo = 1;
+      this.getData();
     },
     // 控制是否是热门mv
     changeIndex2() {
@@ -149,6 +164,8 @@ export default {
         this.index = 0;
         this.$router.push(`/mvlist?hot=1&type=0`);
       }
+      this.pageNo = 1;
+      this.getData();
     },
     // 右边播放mv
     toPlayMv(id, index) {
@@ -168,30 +185,7 @@ export default {
         num = 1;
       }
       this.pageNo = num;
-      this.$store.dispatch("getMvList", {
-        area: this.area,
-        pageNo: this.pageNo,
-        limit: this.limit,
-        // 用于判断是否是获取热门mv
-        isHot: this.$route.query.hot,
-      });
-    },
-  },
-  watch: {
-    $route: {
-      immediate: true,
-      deep: true,
-      handler() {
-        this.pageNo = 1;
-        // console.log(this.$route.query);
-        this.$store.dispatch("getMvList", {
-          area: this.area,
-          pageNo: this.pageNo,
-          limit: this.limit,
-          // 用于判断是否是获取热门mv
-          isHot: this.$route.query.hot,
-        });
-      },
+      this.getData();
     },
   },
 };
@@ -273,6 +267,9 @@ export default {
         bottom: 10px;
         left: 33%;
         text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+        width: 150px;
 
         &:hover {
           color: rgb(82, 96, 180);
