@@ -31,10 +31,15 @@ export const reqGetHighQualityTags = () => requests({
         method: 'GET',
     })
     // 获取精品歌单
-export const reqGetHighQuality = (limit, type) => requests({
-    url: `https://cloud-music-api-bay-alpha.vercel.app/top/playlist/highquality?limit=${limit}&cat=${type}`,
-    method: 'GET',
-})
+export const reqGetHighQuality = (limit, type, offset) => requests({
+        url: `https://cloud-music-api-bay-alpha.vercel.app/top/playlist?limit=${limit}&cat=${type}&offset=${(offset-1)*limit}`,
+        method: 'GET',
+    })
+    /*// 获取网友精选碟    精品歌单url: `http://47.112.103.44:3000/top/playlist/highquality?limit=${limit}&cat=${type}`,
+    export const reqGetHighQuality = (limit, type, offset) => requests({
+        url: `http://47.112.103.44:3000/top/playlist?limit=${limit}&cat=${type}&offset=${(offset-1)*limit}`,
+        method: 'GET',
+    }) */
 
 // 获取歌单详情
 export const reqGetListDetail = (listId) => requests({

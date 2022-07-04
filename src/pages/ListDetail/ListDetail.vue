@@ -5,7 +5,7 @@
         <div class="conleft1">
           <div class="head">
             <div class="left">
-              <img :src="listDetail.coverImgUrl" />
+              <img v-lazy="listDetail.coverImgUrl" />
             </div>
             <div class="right">
               <li class="title">

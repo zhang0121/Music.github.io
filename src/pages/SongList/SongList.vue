@@ -16,20 +16,25 @@
       </div>
       <div class="main">
         <QualitySongList :songList="$store.state.hotsonglist.songList"></QualitySongList>
+
       </div>
-      
+      <div class="page">
+        <Pagination1 :pageNo="pageNo" :continues="5" :pageSize="limit" 
+        :total="$store.state.hotsonglist.total" @upData="upData"></Pagination1>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import QualitySongList from "@/components/QualitySongList.vue";
+import Pagination1 from "@/components/Pagination1.vue";
 
 export default {
   components: {
     QualitySongList,
-    
-  },
+    Pagination1
+},
   data() {
     return {
       // 标签列表
@@ -40,6 +45,8 @@ export default {
       defaultId:5001,
       // 默认20个
       limit:20,
+      // 
+      pageNo:1,
       
     };
   },
@@ -54,19 +61,23 @@ export default {
       this.$store.dispatch("getHighQualityTags");
     },
     getTagsMessage(){
-      this.$store.dispatch('getTagsMessage', {limit:this.limit,type:this.defaultType})
+      this.$store.dispatch('getTagsMessage', {limit:this.limit,type:this.defaultType,offset:this.pageNo})
     },
     // 改变type
-   async changeId(e) {
+    changeId(e) {
       // console.log(this.defaultId);
       this.defaultId=e.target.id;
       this.defaultType=e.target.innerText;
-      try {
-        await this.getTagsMessage();
-      } catch (error) {
-        alert(error)
-      }
+      this.getTagsMessage();
+      
     },
+    upData(num){
+      if(num<=0){
+        num=1;
+      }
+      this.pageNo=num;
+      this.getTagsMessage()
+    }
   },
 };
 </script>
@@ -126,6 +137,9 @@ export default {
     .main{
       width: 95%;
       margin: auto;
+    }
+    .page{
+      margin: 20px 0;
     }
   }
 }

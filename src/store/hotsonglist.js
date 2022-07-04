@@ -16,8 +16,8 @@ const actions = {
         }
     },
     // 获取精品歌单
-    async getTagsMessage(store, { type, limit }) {
-        let a = await reqGetHighQuality(limit, type)
+    async getTagsMessage(store, { type, limit, offset }) {
+        let a = await reqGetHighQuality(limit, type, offset)
         if (a.code == 200) {
             // console.log(a.playlists);
             store.commit('GETTAGSMESSAGE', {
