@@ -20,7 +20,7 @@
       </div>
       <div class="page">
         <Pagination1 :pageNo="pageNo" :continues="5" :pageSize="limit" 
-        :total="$store.state.hotsonglist.total" @upData="upData"></Pagination1>
+        :total="total" @upData="upData" v-if="total>1"></Pagination1>
       </div>
     </div>
   </div>
@@ -79,6 +79,13 @@ export default {
       this.getTagsMessage()
     }
   },
+   computed:{
+    total(){
+      if(this.$store.state.hotsonglist.total){
+        return this.$store.state.hotsonglist.total
+      }
+    }
+  }
 };
 </script>
 
